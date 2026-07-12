@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>البروفيسور محمد خليل - هندسة أدوات طبية</title>
+<style>
+  :root {
+    --primary-blue: #005fa3;
+    --light-blue: #eef6ff;
+    --header-blue: #002b5c;
+  }
+
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #f4f6f9;
+    color: #333;
+  }
+  
+  header {
+    background-color: var(--header-blue);
+    color: white;
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	flex-wrap: wrap;
+
+  }
+
+  .profile-pic {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    margin-right: 1.5rem;
+    background: white;
+  }
+
+  .header-left {
+    
+    display: flex;
+ 	flex-direction: column;     /* Stack image and text vertically */
+	align-items: center;
+	text-align: center;
+	flex: 1 1 100%;
+	gap: 1rem;
+        direction: rtl;              /* Set the text direction to right-to-left */
+  }
+
+  .header-text h1 {
+    margin: 0;
+    font-size: 1.8rem;
+  }
+
+  .header-text p {
+    margin: 0.3rem 0 0;
+    font-size: 1rem;
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 0.5rem;
+    background: transparent;
+	
+    justify-content: center;    /* Center buttons on mobile */
+    flex: 1 1 100%;
+    margin-top: 1rem;
+    
+  }
+.section-content {
+      font-size: 1.2rem;
+      text-align: justify;
+      color: #555;
+    }
+
+    .section-content p {
+      margin-bottom: 15px;
+    }
+
+    .section-content strong {
+      color: var(--primary-blue);
+    }
+  .lang-btn {
+    background: white;
+    border: 2px solid #004080;
+    color: var(--primary-blue);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .lang-btn.active,
+  .lang-btn:hover {
+    background: #004080;
+    color: white;
+  }
+
+ 
+  .export-container {
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .export-container button {
+    padding: 0.6rem 1rem;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .export-container button:hover {
+    background: #004080;
+  }
+
+  .tab-content {
+    display: none;
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  h2 {
+    color: var(--primary-blue);
+    margin-top: 2rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.3rem;
+  }
+
+  p, li {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  ul {
+    padding-left: 1.4rem;
+  }
+
+  .toc {
+    background: var(--light-blue);
+    padding: 1rem;
+    border-right: 5px solid var(--primary-blue);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .toc h3 {
+    margin-top: 0;
+  }
+
+  .toc ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .toc li {
+    margin: 0.5rem 0;
+  }
+
+  .toc a {
+    text-decoration: none;
+    color: var(--primary-blue);
+  }
+
+  .toc a:hover {
+    text-decoration: underline;
+  }
+
+  details {
+    margin-bottom: 1.5rem;
+    background: #fff;
+    padding: 1rem 1.5rem;
+    border: 1px solid #ddd;
+    border-right: 4px solid var(--primary-blue);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  summary {
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--primary-blue);
+    outline-offset: 3px;
+  }
+
+  summary::-webkit-details-marker {
+    color: var(--primary-blue);
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+    background: #e2e6eb;
+    padding: 1rem;
+    margin-top: 3rem;
+  }
+
+  a {
+    color: var(--primary-blue);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+ 
+   
+  
+
+  @media (min-width: 600px) {
+  header {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .header-left {
+    flex-direction: row;       /* Image and text side by side */
+    text-align: right;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+
+  .lang-switch {
+    flex: 0 0 auto;
+    margin-top: 0;
+    justify-content: flex-end; /* Buttons align to the right */
+  }
+}
+
+ 
+
+  /* Print styles */
+  @media print {
+    body:not(.printing) * {
+      visibility: hidden !important;
+    }
+    body.printing {
+      background: white;
+      color: black;
+    }
+    body.printing header,
+    body.printing .tab-content.active {
+      display: block !important;
+      visibility: visible !important;
+    }
+    body.printing .export-container,
+     body.printing footer,
+    body.printing .lang-switch {
+      display: none !important;
+    }
+    body.printing details {
+      display: block;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+    summary {
+      font-weight: bold;
+      color: black;
+      cursor: default;
+    }
+	footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      background: #e2e6eb;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <img src="mk.png" alt="Prof. Mohamad Khalil" class="profile-pic" />
+    <div class="header-text">
+      <h1>البروفيسور محمد خليل</h1>
+      <p> دكتوراه و (HDR) من جامعة  (UTC)، <br>مؤهل أستاذ  معتمد من (CNU)، فرنسا
+</p>
+    </div>
+  </div>
+  <div class="lang-switch" role="group" aria-label="Language Switch">
+    
+    <button  id="btn-ar" class="lang-btn active"  >العربية</button>
+       <button   id="btn-en" class="lang-btn " onclick="switchLanguage()">English</button>
+  </div>
+</header>
+
+
+<div class="export-container">
+  <button id="exportBtn" aria-label="Export or print CV as PDF">⬇️ تصدير / طباعة PDF</button>
+</div>
+
+<!-- Summary Tab Content -->
+<div id="content-summary" class="tab-content active" role="tabpanel" aria-labelledby="tab-summary">
+  <div class="toc">
+    <h3>فهرس المحتويات</h3>
+    <ul>
+      <li><a href="#sum-contact">تواصل</a></li>
+      <li><a href="#sum-about">نبذة عن البروفيسور محمد علي خليل</a></li>
+      <li><a href="#sum-roles">العمل الحالي</a></li>
+      <li><a href="#sum-education">الشهادات الأكاديمية</a></li>
+      <li><a href="#sum-experience">الخبرة والإنجازات الأكاديمية والمجتمعية</a></li>
+	   <li><a href="#sum-award">الجوائز والتكريمات</a></li>
+	    <li><a href="#sum-theme">المحاور البحثية</a></li>
+    </ul>
+  </div>
+
+  <details id="sum-contact" open>
+    <summary>تواصل</summary>
+     <p><strong>البريد الإلكتروني:</strong> <a href="mailto:mkhalil@ieee.org">mkhalil@ieee.org</a></p>
+     <p><strong>البريد الإلكتروني:</strong> <a href="mailto:mohamad.khalil@ul.edu.lb">mohamad.khalil@ul.edu.lb</a></p>
+     <p><strong>الهاتف:</strong> 03 396 747, 06 213 449</p>
+      <p><strong>الفاكس:</strong> 06 213 253</p>
+  </details>
+
+  <details id="sum-about" open>
+    <summary>نبذة عن البروفيسور محمد علي خليل</summary>
+    <div class="section-content">
+      <p><strong>البروفيسور محمد علي خليل</strong> (مواليد عكار العتيقة- ١٩٧٣) هو أحد أبرز الأكاديميين اللبنانيين في مجالي الذكاء الاصطناعي والهندسة الطبية الحيوية. يشغل حاليًا منصب أستاذ في <strong>الجامعة اللبنانية</strong> ومدير <strong>مركز العزم للأبحاث في التكنولوجيا الحيوية</strong> في المعهد العالي للدكتوراه في العلوم والتكنولوجيا.</p>
+
+      <p>يتمتع بخبرة أكاديمية وعلمية تفوق <strong>الخمس وعشرين عامًا</strong>، وقد نشر أكثر من <strong>٢٨٠مقالة علمية</strong> في مجلات ومؤتمرات دولية محكمة، ويبلغ معامل التأثير العلمي (H-index) لديه <strong>٣١</strong>، ما يعكس مكانته البحثية المرموقة عالميًا.</p>
+
+      <p>يُعرف البروفيسور خليل بأعماله الريادية في تطبيقات <strong>الذكاء الاصطناعي في المجال الطبي</strong>، وتحليل إشارات الدماغ، وتطوير الأنظمة الذكية. وقد أنشأ شراكات بحثية قوية مع <strong>جامعات ومراكز أبحاث في فرنسا وأستراليا وروسيا</strong>، ويساهم بفاعلية في دعم برامج التبادل الطلابي وبناء القدرات العلمية على المستوى المحلي والدولي.</p>
+
+      <p>على الصعيد العام، شغل البروفيسور خليل سابقًا منصب <strong>رئيس بلدية عكّار العتيقة</strong>، حيث قاد عددًا من المشاريع التنموية، خصوصًا خلال الأزمات الاقتصادية وجائحة كورونا، معتمدًا على مبدأ الربط بين العلم وخدمة المجتمع.</p>
+    </div>
+  </details>
+
+  <details id="sum-roles" open>
+    <summary>العمل الحالي</summary>
+    <ul>
+            <li>أستاذ بروفسور محاضر في كلية الهندسة - الفرع الأول في الجامعة اللبنانية</li>
+            <li>أستاذ بروفسور محاضر حول الذكاء الاصطناعي وتطبيقاته الطبية في جامعات كومبيان وليل ورين وروان وبواتيه وباريس في فرنسا وجامعة بيتسبرغ في روسيا</li>
+            <li>مدير مركز العزم لأبحاث البيوتكنولوجيا التابع للمعهد العالي للدكتوراه في العلوم والتكنولوجيا في الجامعة اللبنانية منذ ٢٠٠٩</li>
+            <li>مسؤول الماجستير البحثية في انترنت الأشياء والأنظمة الذكية في كلية الهندسة في الجامعة اللبنانية منذ ٢٠١٠</li>
+        </ul>
+  </details>
+
+  <details id="sum-education" open>
+    <summary>الشهادات الأكاديمية</summary>
+    <ul>
+            <li>حائز على رتبة أستاذ (بروفسور) من الجامعة اللبنانية – أيلول ٢٠٠٨.</li>
+            <li>حاصل على شهادة التأهيل للإشراف على الأبحاث (HDR – Habilitation à Diriger les Recherches) من جامعة التكنولوجيا في كومبيان – فرنسا – آذار ٢٠٠٦.</li>
+            <li>دكتوراه في تقنيات الهندسة الطبية من جامعة التكنولوجيا في كومبيان – فرنسا، بتقدير: "مشرف جدًا مع تهاني لجنة التحكيم" – أيلول ١٩٩٩.</li>
+            <li>دراسات عليا في التقنيات الطبية من جامعة التكنولوجيا في كومبيان – فرنسا – ١٩٩٦، بمنحة من الوكالة الجامعية للفرنكوفونية AUF.</li>
+            <li>مهندس في الكهرباء والإلكترونيك من كلية الهندسة – الجامعة اللبنانية – ١٩٩٥.</li>
+        </ul>
+  </details>
+
+  <details id="sum-experience" open>
+    <summary>الخبرة والإنجازات الأكاديمية والمجتمعية</summary>
+   
+  <ul>
+            <li>عضو في المجلس العلمي في المعهد العالي للدكتوراه في العلوم والتكنولوجيا – الجامعة اللبنانية منذ عام ٢٠٠٨.</li>
+            <li>منسّق ماجستير إنترنت الأشياء والأنظمة الذكية في كلية الهندسة – الجامعة اللبنانية.</li>
+            <li>مسؤول عن مشروعين ممولين من الاتحاد الأوروبي بالتعاون مع الجامعة اللبنانية، في مجالي الزراعات المائية الذكية وتحويل مياه الصرف الصحي إلى مياه للري الزراعي.</li>
+            <li>ناشر ومؤلف لأكثر من ١٠٠ بحث علمي عالمي في مجلات دولية محكّمة ومصنّفة.</li>
+            <li>مشارك فعّال في أكثر من ١٨٠ مؤتمرًا دوليًا في لبنان، المنطقة، وأوروبا وأستراليا، كباحث ومحاضر ومتحدّث رئيسي.</li>
+            <li>عضو محكّم في العديد من المجلات العلمية الدولية.</li>
+            <li>مدعوّ أكاديميًا وبحثيًا من جامعات ومراكز علمية دولية مرموقة (أستراليا، فرنسا، وغيرها) للمساهمة في محاضرات ومشاريع وورش علمية.</li>
+            <li>عضو في الجمعية الدولية لمهندسي الكهرباء والإلكترونيك IEEE منذ ١٩٩٥، ومحكّم في مجلاتها العلمية.</li>
+            <li>عضو في لجنة التحكيم الدولية لجائزة Prix Roberval لاختيار أفضل الكتب والمجلات العلمية التكنولوجية، بتنظيم سنوي من جامعة التكنولوجيا في كومبيين – فرنسا.</li>
+            <li>مشرف حالي على خمس أطروحات دكتوراه في مجالات الذكاء الاصطناعي والهندسة الطبية والأمراض العصبية.</li>
+            <li>مشرف سابق على أكثر من ٥٠ أطروحة دكتوراه وعشرات رسائل الماجستير.</li>
+            <li>مشارك في لجان تحكيم عشرات مناقشات الدكتوراه في لبنان وخارجه.</li>
+            <li>منسق ومسؤول عن مؤتمر ICABME الدولي في الهندسة الطبية، المنظّم دوريًا في الجامعات اللبنانية منذ عام ٢٠٠٩ وحتى ٢٠٢٥.</li>
+            <li>محاضر رئيسي (Keynote Speaker) في العديد من المؤتمرات العلمية الدولية.</li>
+            <li>مؤسس ورئيس فرع IEEE للهندسة الطبية في لبنان بين عامي ٢٠١٤ و ٢٠٢٠.</li>
+            <li>ممثّل منتخب عن الشرق الأوسط وأفريقيا في الهيئة الإدارية العالمية EMBS – IEEE بين ٢٠١٧ و ٢٠٢٣.</li>
+            <li>محاضر في جامعة فاروس – الإسكندرية عام ٢٠٢٥ ضمن برنامج تدريبي حول الذكاء الاصطناعي لأساتذة الجامعات، بتنظيم من الوكالة الجامعية للفرنكوفونية AUF.</li>
+            <li>رئيس بلدية عكار العتيقة منذ عام ٢٠١٩ وحتى ٢٠٢٥، وعضو مجلس بلدي منتخب منذ عام ٢٠٠٤، ومساهم في قيادة وتنفيذ العديد من المشاريع الأوروبية والمحلية والنشاطات الثقافية والبيئية في البلدة.</li>
+        </ul>
+
+
+  </details>
+   <details id="sum-award" open>
+    <summary>الجوائز والتكريمات</summary>
+   <ul>
+            <li>حاصل على جائزة أفضل أستاذ مشرف متميّز لعامي ٢٠٠٤ و ٢٠٠٥ من جمعية الصناعيين اللبنانيين، تقديرًا لجهوده في الإشراف على مشاريع التخرّج ذات الأثر الصناعي.</li>
+            <li>حاصل على جائزة الابتكار لعام ٢٠١٣ من الوكالة الجامعية للفرنكوفونية (AUF) بالتعاون مع جمعية LASER، عن مشروع متميّز في تكنولوجيا التعليم.</li>
+            <li>حاصل على جائزة أفضل مشروع بحثي ابتكاري من وزارة الصناعة اللبنانية عامي ٢٠١٤ و ٢٠١٦، عن مشاريع ذات طابع تطبيقي في مجالات الهندسة والتكنولوجيا.</li>
+            <li>حائز على جائزة المجلس الوطني للبحوث العلمية CNRS كأفضل باحث في مجال العلوم الهندسية لعام ٢٠١٥، وتم تكريمه رسميًا في القصر الحكومي اللبناني.</li>
+            <li>نال وسام "مشرف" جوقة الشرف اللبنانية-الفرنسية عام ٢٠١٦، تقديرًا لإسهاماته العلمية في التعاون الأكاديمي بين لبنان وفرنسا.</li>
+            <li>مُكرّم من قبل العديد من الجمعيات الوطنية والدولية تقديرًا لدوره الريادي في البحث العلمي، الابتكار، وخدمة المجتمع الأكاديمي.</li>
+        </ul>
+     </details>
+   <details id="sum-theme" open>
+    <summary>المحاور البحثية</summary>
+     <ul>
+            <li>التقاط الاشارات الرحمية وتحليلها بهدف الكشف عن الولادات المبكرة وذلك باستعمال الذكاء الاصطناعي.</li>
+            <li>تحليل اشارات الرأس بالذكاء الاصطناعي بهدف الكشف عن أمراض الألزهايمر والبركنسون والاكتآب.</li>
+            <li>أبحاث عن التحكم عبر التفكير بواسطة الذكاء الاصطناعي (Brain Computer Interface).</li>
+            <li>تحليل الصور الطبية بواسطة الذكاء الاصطناعي - التقاط الاشارات القلبية وتحليلها بهدف تسجيلها بأقل حجم ممكن.</li>
+            <li>الكشف المسبق عن المشاكل العملية للآلات في المصانع عبر دراسة الاشارات الارتجاجية.</li>
+        </ul>
+  </details>
+</div>
+
+
+<script>
+ 
+
+  exportBtn.onclick = () => {
+    window.print();
+  };
+
+  window.onbeforeprint = () => {
+    document.body.classList.add('printing');
+    document.querySelectorAll('.tab-content.active details').forEach(d => d.open = true);
+  };
+
+  window.onafterprint = () => {
+    document.body.classList.remove('printing');
+  };
+
+  function switchLanguage() {
+    window.location.href = 'index.html'; 
+  }
+</script>
+<footer>
+<span> البروفيسور محمد خليل · باحث في هندسة الطب الحيوي · جميع الحقوق محفوظة </span>
+<span>  © 2025</span>
+</footer>
+
+<!-- AI Chatbot Widget -->
+<style>
+.cv-wrap {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+}
+.cv-tooltip-box {
+    position: relative;
+    display: inline-block;
+}
+.cv-tooltip-box .cv-tip {
+    visibility: hidden;
+    opacity: 0;
+    background: #002b5c;
+    color: white;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    position: absolute;
+    bottom: 110%;
+    right: 0;
+    transition: opacity 0.2s;
+    font-family: Segoe UI, sans-serif;
+    pointer-events: none;
+}
+.cv-tooltip-box:hover .cv-tip {
+    visibility: visible;
+    opacity: 1;
+}
+.cv-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #005fa3;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,95,163,0.4);
+    display: block;
+}
+.cv-win {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 350px;
+    max-height: 520px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0,43,92,0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+    overflow: hidden;
+    font-family: Segoe UI, sans-serif;
+    border: 1px solid #dce8f5;
+}
+.cv-win.open { display: flex; }
+.cv-head {
+    background: linear-gradient(135deg, #002b5c, #005fa3);
+    color: white;
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+.cv-head small { opacity: 0.8; font-weight: 400; display: block; font-size: 0.75rem; }
+.cv-msgs {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    max-height: 360px;
+    background: #f8fbff;
+    font-size: 0.87rem;
+}
+.cv-m {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 90%;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.cv-m.u { background: #005fa3; color: white; margin-left: auto; border-bottom-right-radius: 3px; }
+.cv-m.b { background: white; color: #222; border: 1px solid #dce8f5; border-bottom-left-radius: 3px; }
+.cv-m.l { color: #888; font-style: italic; background: none; border: none; }
+.cv-row {
+    display: flex;
+    border-top: 1px solid #dce8f5;
+    background: white;
+}
+.cv-row input {
+    flex: 1;
+    border: none;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 0.87rem;
+    outline: none;
+}
+.cv-mic {
+    border: none;
+    background: none;
+    padding: 0 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #888;
+}
+.cv-send {
+    border: none;
+    background: #005fa3;
+    color: white;
+    padding: 0 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.87rem;
+}
+</style>
+
+<div class="cv-wrap">
+    <div class="cv-tooltip-box">
+        <span class="cv-tip">اسأل عن البروفيسور خليل</span>
+        <button class="cv-btn" id="cvBtn">&#x1F4AC;</button>
+    </div>
+</div>
+
+<div class="cv-win" id="cvWin">
+    <div class="cv-head">
+        مساعد البروفيسور خليل
+        <small>اسأل عن الأبحاث والمنشورات والتدريس وأكثر</small>
+    </div>
+    <div class="cv-msgs" id="cvMsgs">
+        <div class="cv-m b">مرحباً! يمكنني الإجابة على أسئلتك حول البروفيسور محمد خليل أو أي موضوع عام. تفضل!</div>
+    </div>
+    <div class="cv-row">
+        <input type="text" id="cvInput" placeholder="اطرح سؤالاً..." />
+        <button class="cv-mic" id="cvMic">&#x1F3A4;</button>
+        <button class="cv-send" id="cvSend">إرسال</button>
+    </div>
+</div>
+
+<script>
+var cvHistory = [];
+var cvListening = false;
+var cvText = "";
+var cvInputWasVoice = false;
+var cvIsSpeaking = false;
+var CV_LANG_CODE = "ar-SA";
+var CV_PROXY_URL = "https://khalil-proxy-production.up.railway.app/chat";
+var CV_THINKING_TEXT = "جاري التفكير...";
+var CV_ERROR_TEXT = "عذراً، حدث خطأ ما.";
+var CV_NETWORK_ERROR_TEXT = "خطأ في الشبكة. يرجى التحقق من الاتصال.";
+var CV_SYSTEM_PROMPT = "انت مساعد ذكي لموقع السيرة الذاتية للاستاذ الدكتور محمد خليل. اجب على الاسئلة المتعلقة به بناء على محتوى السيرة الذاتية ادناه، واجب على اي سؤال عام بمعرفتك. حافظ على اسلوب مهني. لا تخترع معلومات.\n\nمحتوى السيرة الذاتية:\n";
+
+document.getElementById("cvBtn").addEventListener("click", function() {
+    var win = document.getElementById("cvWin");
+    win.classList.toggle("open");
+    if (win.classList.contains("open") && cvText === "") {
+        var clone = document.body.cloneNode(true);
+        var els = clone.querySelectorAll(".cv-win, .cv-wrap, script, style");
+        els.forEach(function(e) { e.remove(); });
+        cvText = (clone.innerText || clone.textContent || "").replace(/[ \t]{2,}/g, " ").trim().slice(0, 12000);
+    }
+});
+
+document.getElementById("cvSend").addEventListener("click", function() {
+    cvInputWasVoice = false;
+    cvSend();
+});
+
+document.getElementById("cvInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        cvInputWasVoice = false;
+        cvSend();
+    }
+});
+
+document.getElementById("cvMic").addEventListener("click", function() {
+    if (cvIsSpeaking) {
+        window.speechSynthesis.cancel();
+        cvIsSpeaking = false;
+        document.getElementById("cvMic").innerHTML = "&#x1F3A4;";
+        return;
+    }
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+        alert("ميزة الصوت تتطلب متصفح Chrome او Edge.");
+        return;
+    }
+    if (cvListening) { cvListening = false; return; }
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var r = new SR();
+    r.lang = CV_LANG_CODE;
+    cvListening = true;
+    document.getElementById("cvMic").classList.add("listening");
+    r.onresult = function(e) {
+        document.getElementById("cvInput").value = e.results[0][0].transcript;
+        cvListening = false;
+        document.getElementById("cvMic").classList.remove("listening");
+        cvInputWasVoice = true;
+        cvSend();
+    };
+    r.onerror = r.onend = function() {
+        cvListening = false;
+        document.getElementById("cvMic").classList.remove("listening");
+    };
+    r.start();
+});
+
+function cvSpeak(text) {
+    cvIsSpeaking = true;
+    document.getElementById("cvMic").innerHTML = "&#x23F9;";
+
+    function done() {
+        cvIsSpeaking = false;
+        document.getElementById("cvMic").innerHTML = "&#x1F3A4;";
+    }
+
+    // Try Web Speech API with Arabic voice first
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+
+        function trySpeak() {
+            var voices = window.speechSynthesis.getVoices();
+            var arabicVoice = null;
+            for (var i = 0; i < voices.length; i++) {
+                if (voices[i].lang && voices[i].lang.indexOf("ar") === 0) {
+                    arabicVoice = voices[i];
+                    break;
+                }
+            }
+
+            var u = new SpeechSynthesisUtterance(text);
+            u.lang = "ar-SA";
+            u.rate = 0.85;
+            if (arabicVoice) u.voice = arabicVoice;
+            u.onstart = function() { console.log("Speaking with lang:", u.lang); };
+            u.onend = done;
+            u.onerror = function(e) {
+                console.log("Speech error:", e.error);
+                done();
+            };
+            window.speechSynthesis.speak(u);
+        }
+
+        var voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+            trySpeak();
+        } else {
+            window.speechSynthesis.onvoiceschanged = function() {
+                window.speechSynthesis.onvoiceschanged = null;
+                trySpeak();
+            };
+            setTimeout(trySpeak, 200);
+        }
+    } else {
+        done();
+    }
+}
+
+async function cvSend() {
+    var input = document.getElementById("cvInput");
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = "";
+
+    if (cvText === "") {
+        var clone = document.body.cloneNode(true);
+        var els = clone.querySelectorAll(".cv-win, .cv-wrap, script, style");
+        els.forEach(function(e) { e.remove(); });
+        cvText = (clone.innerText || clone.textContent || "").replace(/[ \t]{2,}/g, " ").trim().slice(0, 12000);
+    }
+
+    var msgs = document.getElementById("cvMsgs");
+
+    var ud = document.createElement("div");
+    ud.className = "cv-m u";
+    ud.textContent = q;
+    msgs.appendChild(ud);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    var ld = document.createElement("div");
+    ld.className = "cv-m l";
+    ld.textContent = CV_THINKING_TEXT;
+    msgs.appendChild(ld);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    cvHistory.push({ role: "user", content: q });
+
+    var sys = CV_SYSTEM_PROMPT + cvText;
+
+    try {
+        var res = await fetch(CV_PROXY_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ system: sys, messages: cvHistory })
+        });
+        var data = await res.json();
+        ld.remove();
+
+        var ans = data.answer
+            ? data.answer.replace(/\*\*(.*?)\*\*/g, "$1").replace(/\*(.*?)\*/g, "$1").trim()
+            : CV_ERROR_TEXT;
+
+        var bd = document.createElement("div");
+        bd.className = "cv-m b";
+        bd.textContent = ans;
+        msgs.appendChild(bd);
+        msgs.scrollTop = msgs.scrollHeight;
+
+        cvHistory.push({ role: "assistant", content: ans });
+
+        if (cvInputWasVoice) {
+            cvSpeak(ans);
+        }
+        cvInputWasVoice = false;
+
+    } catch(e) {
+        ld.remove();
+        var ed = document.createElement("div");
+        ed.className = "cv-m b";
+        ed.textContent = CV_NETWORK_ERROR_TEXT;
+        msgs.appendChild(ed);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
+}
+</script>
+
+
+</body>
+</html>
