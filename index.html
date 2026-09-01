@@ -3060,6 +3060,10 @@ In recent years, I have been invited by several universities as a <strong>visiti
         Prof. Khalil Assistant
         <small>Ask about research, publications, teaching and more</small>
     </div>
+    <div class="cv-counter" id="cvCounter">
+        <span>Daily requests remaining:</span>
+        <span class="cv-counter-badge" id="cvCounterBadge">10</span>
+    </div>
     <div class="cv-msgs" id="cvMsgs">
         <div class="cv-m b">Hi! Ask me anything about Prof. Mohamad Khalil or any general topic!</div>
     </div>
@@ -3076,8 +3080,18 @@ var cvListening = false;
 var cvText = "";
 var cvInputWasVoice = false;
 var cvIsSpeaking = false;
+var cvRequestsLeft = 10;
+
+function updateCounter() {
+    var badge = document.getElementById("cvCounterBadge");
+    if (!badge) return;
+    badge.textContent = cvRequestsLeft;
+    badge.className = "cv-counter-badge";
+    if (cvRequestsLeft <= 3 && cvRequestsLeft > 0) badge.classList.add("low");
+    if (cvRequestsLeft <= 0) badge.classList.add("empty");
+}
 var CV_LANG_CODE = "en-US";
-var CV_PROXY_URL = "https://khalil-proxy.onrender.com";
+var CV_PROXY_URL = "https://khalil-proxy-production.up.railway.app/chat";
 var CV_THINKING_TEXT = "Thinking...";
 var CV_ERROR_TEXT = "Sorry, something went wrong.";
 var CV_NETWORK_ERROR_TEXT = "Network error. Make sure the proxy server is running.";
@@ -3203,6 +3217,8 @@ async function cvSend() {
         msgs.scrollTop = msgs.scrollHeight;
 
         cvHistory.push({ role: "assistant", content: ans });
+        cvRequestsLeft = Math.max(0, cvRequestsLeft - 1);
+        updateCounter();
 
         if (cvInputWasVoice) {
             cvSpeak(ans);
