@@ -595,12 +595,54 @@
 </div>
 
 <script>
+// ── Generate persistent user ID ──
+function getCookie(name) {
+    var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+    return match ? match[2] : null;
+}
+function setCookie(name, value, days) {
+    var expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/;SameSite=Lax";
+}
+function getUserId() {
+    var id = getCookie("cv_user_id");
+    if (!id) {
+        id = "u_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now().toString(36);
+        setCookie("cv_user_id", id, 365);
+    }
+    return id;
+}
+var CV_USER_ID = getUserId();
 var cvHistory = [];
 var cvListening = false;
 var cvText = "";
 var cvInputWasVoice = false;
 var cvIsSpeaking = false;
-var cvRequestsLeft = 10;
+// ── Persistent counter using localStorage ──
+function getTodayKey() {
+    return "cvRequests_" + new Date().toDateString();
+}
+
+function getRequestsLeft() {
+    var key = getTodayKey();
+    var stored = localStorage.getItem(key);
+    if (stored === null) {
+        localStorage.setItem(key, 10);
+        return 10;
+    }
+    return parseInt(stored);
+}
+
+function decreaseRequests() {
+    var key = getTodayKey();
+    var left = getRequestsLeft();
+    left = Math.max(0, left - 1);
+    localStorage.setItem(key, left);
+    return left;
+}
+
+var cvRequestsLeft = getRequestsLeft();
 
 function updateCounter() {
     var badge = document.getElementById("cvCounterBadge");
@@ -756,7 +798,7 @@ async function cvSend() {
     try {
         var res = await fetch(CV_PROXY_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "x-user-id": CV_USER_ID },
             body: JSON.stringify({ system: sys, messages: cvHistory })
         });
         var data = await res.json();
@@ -773,7 +815,7 @@ async function cvSend() {
         msgs.scrollTop = msgs.scrollHeight;
 
         cvHistory.push({ role: "assistant", content: ans });
-        cvRequestsLeft = Math.max(0, cvRequestsLeft - 1);
+        cvRequestsLeft = decreaseRequests();
         updateCounter();
 
         if (cvInputWasVoice) {
