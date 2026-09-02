@@ -3099,30 +3099,24 @@ var cvListening = false;
 var cvText = "";
 var cvInputWasVoice = false;
 var cvIsSpeaking = false;
-// ── Persistent counter using localStorage ──
-function getTodayKey() {
-    return "cvRequests_" + new Date().toDateString();
-}
+var cvRequestsLeft = 10;
 
-function getRequestsLeft() {
-    var key = getTodayKey();
-    var stored = localStorage.getItem(key);
-    if (stored === null) {
-        localStorage.setItem(key, 10);
-        return 10;
+// Fetch real count from server on page load
+async function fetchRequestsLeft() {
+    try {
+        var res = await fetch(CV_PROXY_URL.replace("/chat", "/remaining"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-user-id": CV_USER_ID },
+        });
+        var data = await res.json();
+        if (typeof data.remaining === "number") {
+            cvRequestsLeft = data.remaining;
+            updateCounter();
+        }
+    } catch(e) {
+        console.log("Could not fetch remaining requests:", e);
     }
-    return parseInt(stored);
 }
-
-function decreaseRequests() {
-    var key = getTodayKey();
-    var left = getRequestsLeft();
-    left = Math.max(0, left - 1);
-    localStorage.setItem(key, left);
-    return left;
-}
-
-var cvRequestsLeft = getRequestsLeft();
 
 function updateCounter() {
     var badge = document.getElementById("cvCounterBadge");
@@ -3142,6 +3136,9 @@ var CV_SYSTEM_PROMPT = "You are an assistant for Prof. Mohamad Khalil academic C
 document.getElementById("cvBtn").addEventListener("click", function() {
     var win = document.getElementById("cvWin");
     win.classList.toggle("open");
+    if (win.classList.contains("open")) {
+        fetchRequestsLeft();
+    }
     if (win.classList.contains("open") && cvText === "") {
         var clone = document.body.cloneNode(true);
         var els = clone.querySelectorAll(".cv-win, .cv-wrap, script, style");
@@ -3259,7 +3256,7 @@ async function cvSend() {
         msgs.scrollTop = msgs.scrollHeight;
 
         cvHistory.push({ role: "assistant", content: ans });
-        cvRequestsLeft = decreaseRequests();
+        cvRequestsLeft = Math.max(0, cvRequestsLeft - 1);
         updateCounter();
 
         if (cvInputWasVoice) {
@@ -3281,4 +3278,3 @@ async function cvSend() {
 
 </body>
 </html>
- 
